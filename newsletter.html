@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsletter | WEGtrax</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <style>
+        :root {
+            --color-dark: #0a1a1c;
+            --color-primary: #022128;
+            --color-secondary: #1a4742;
+            --color-accent: #2A7C6D;
+            --color-light: #ffffff;
+            --color-bg: #0a1a1c;
+            --color-card: #111f22;
+            --color-surface: #152B2E;
+            --color-text: #ffffff;
+            --color-text-secondary: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-glow: 0 0 20px rgba(42, 124, 109, 0.25);
+            --shadow-deep: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --border-radius: 10px;
+        }
+        .light-theme {
+            --color-dark: #f8fafc;
+            --color-primary: #e8f4f3;
+            --color-secondary: #0d8c7a;
+            --color-accent: #00796b;
+            --color-light: #1a1a1a;
+            --color-bg: #ffffff;
+            --color-card: #ffffff;
+            --color-surface: #f0f4f8;
+            --color-text: #1a1a1a;
+            --color-text-secondary: rgba(26, 26, 26, 0.85);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 99999;
+            background-color: rgba(10, 26, 28, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(42, 124, 109, 0.2);
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+        .light-theme header {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 121, 107, 0.15);
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+        .logo-graphic {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .logo-graphic img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+        .logo-container:hover .logo-graphic img {
+            transform: rotate(-3deg) scale(1.05);
+        }
+        .logo-text-main {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+        .light-theme .logo-text-main {
+            color: #32756c;
+        }
+        .logo-text-tagline {
+            font-size: 0.7rem;
+            color: var(--color-accent);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+        nav a {
+            text-decoration: none;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+        nav a:hover {
+            color: var(--color-accent);
+        }
+        nav a.active {
+            color: var(--color-accent);
+        }
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-accent);
+            border-radius: 1px;
+        }
+        .nav-cta {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(42, 124, 109, 0.3);
+        }
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(42, 124, 109, 0.4);
+        }
+        .dropdown {
+            position: relative;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--color-card);
+            min-width: 200px;
+            box-shadow: var(--shadow-deep);
+            border-radius: var(--border-radius);
+            padding: 10px 0;
+            z-index: 1000;
+            border: 1px solid rgba(42, 124, 109, 0.2);
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .dropdown-content a:hover {
+            background-color: rgba(42, 124, 109, 0.1);
+            color: var(--color-accent);
+            padding-left: 25px;
+        }
+        .newsletter-hero {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+            padding: 140px 0 80px;
+            text-align: center;
+            margin-top: 70px;
+        }
+        .newsletter-hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--color-light) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+        .newsletter-hero p {
+            font-size: 1.2rem;
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .article-container {
+            max-width: 900px;
+            margin: 80px auto;
+        }
+        .article-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .article-header h2 {
+            font-size: 2.5rem;
+            color: var(--color-text);
+            margin-bottom: 20px;
+        }
+        .article-date {
+            color: var(--color-accent);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+        .article-content {
+            background: var(--color-card);
+            padding: 50px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(42, 124, 109, 0.2);
+        }
+        .article-content h3 {
+            font-size: 1.8rem;
+            color: var(--color-text);
+            margin: 30px 0 20px;
+        }
+        .article-content p {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        .article-content blockquote {
+            border-left: 4px solid var(--color-accent);
+            padding-left: 20px;
+            margin: 40px 0;
+            color: var(--color-text-secondary);
+            font-style: italic;
+            font-size: 1.2rem;
+        }
+        .article-content img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            margin: 30px 0;
+        }
+        .article-cta {
+            text-align: center;
+            margin: 50px 0;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(42, 124, 109, 0.6);
+        }
+        .newsletter-archive {
+            margin: 80px 0;
+        }
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .archive-item {
+            background: var(--color-card);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(42, 124, 109, 0.2);
+            transition: var(--transition);
+        }
+        .archive-item:hover {
+            transform: translateY(-5px);
+            border-color: rgba(42, 124, 109, 0.4);
+            box-shadow: var(--shadow-deep);
+        }
+        .archive-item h3 {
+            font-size: 1.3rem;
+            color: var(--color-text);
+            margin-bottom: 15px;
+        }
+        .archive-item p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        .archive-date {
+            color: var(--color-accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .subscribe-section {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+            padding: 80px 0;
+            text-align: center;
+            margin: 80px 0;
+        }
+        .subscribe-section h2 {
+            font-size: 2.5rem;
+            color: var(--color-text);
+            margin-bottom: 20px;
+        }
+        .subscribe-section p {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin: 0 auto 40px;
+        }
+        .subscribe-form {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid rgba(42, 124, 109, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--color-text);
+            font-size: 1rem;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--color-accent);
+        }
+        footer {
+            background: #0b0f19;
+            padding: 60px 0 30px;
+            text-align: center;
+        }
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .newsletter-hero {
+                padding: 120px 0 60px;
+                margin-top: 60px;
+            }
+            .newsletter-hero h1 {
+                font-size: 2.5rem;
+            }
+            .article-content {
+                padding: 30px 20px;
+            }
+            .article-header h2 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo-container">
+                <div class="logo-graphic">
+                    <img src="img/wegtrax_logo_dark.png" alt="WEGtrax Logo" style="background: transparent;">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-text-main">WEGtrax</div>
+                    <div class="logo-text-tagline">Road condition intelligence</div>
+                </div>
+            </a>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html" class="nav-home">Home</a></li>
+                    <li><a href="index.html#solutions" class="nav-solutions">Solutions</a></li>
+                    <li class="dropdown" id="about-dropdown">
+                        <a href="#" class="nav-about active">About Us <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="vision.html">Our Vision</a>
+                            <a href="newsletter.html" class="active">Newsletter</a>
+                        </div>
+                    </li>
+                    <li><a href="index.html#contact" class="nav-cta nav-contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="newsletter-hero">
+        <div class="container">
+            <h1>WEGtrax Newsletter</h1>
+            <p>Stay updated with the latest developments in satellite-based road infrastructure monitoring</p>
+        </div>
+    </section>
+
+    <section class="article-container">
+        <div class="article-header">
+            <h2>WEGtrax Predicts Infrastructure Problems Before They Become Visible</h2>
+            <div class="article-date">Featured in AIHub Oost | January 2025</div>
+        </div>
+        <div class="article-content">
+            <p>In a groundbreaking development for infrastructure management, WEGtrax is revolutionizing how we monitor and maintain road networks. Using advanced satellite technology and artificial intelligence, the company can now predict infrastructure problems long before they become visible to the naked eye.</p>
+            <h3>The Satellite Revolution</h3>
+            <p>Traditional road monitoring methods involve manual inspections, which are time-consuming, expensive, and often reactive rather than preventive. WEGtrax has developed a system that uses Synthetic Aperture Radar (SAR) satellites to continuously monitor road surfaces across entire countries.</p>
+            <p>"Our technology allows us to detect millimeter-level changes in road surfaces," explains Sriram Arumugam, founder and CEO of WEGtrax. "By analyzing these subtle changes over time, we can predict where problems will develop months or even years before they become visible or dangerous."</p>
+            <blockquote>
+                "We're moving from reactive maintenance to predictive intelligence. This not only saves money but more importantly, it saves lives by preventing accidents caused by deteriorating road conditions."
+            </blockquote>
+            <h3>How It Works</h3>
+            <p>The system combines multiple technologies:</p>
+            <p><strong>Synthetic Aperture Radar (SAR):</strong> Provides detailed measurements of road surface properties regardless of weather conditions or time of day.</p>
+            <p><strong>Optical Satellite Imagery:</strong> High-resolution images for visual inspection of lane markings and surface conditions.</p>
+            <p><strong>Artificial Intelligence:</strong> Machine learning algorithms analyze the satellite data to detect patterns and predict deterioration.</p>
+            <p><strong>InSAR Technology:</strong> Detects ground movement and subsidence that could affect road stability.</p>
+            <h3>Early Success and Future Applications</h3>
+            <p>WEGtrax has already successfully piloted its technology in several regions, demonstrating significant cost savings for municipalities and transportation authorities. The system can reduce maintenance costs by up to 40% through optimized scheduling and preventive interventions.</p>
+            <p>Looking forward, the company is expanding its capabilities to include flood detection, construction progress monitoring, and emergency response planning. "We're just scratching the surface of what's possible with satellite-based infrastructure monitoring," says Arumugam.</p>
+            <div class="article-cta">
+                <a href="https://www.aihub-oost.nl/actueel/wegtrax-voorspelt-infrastructuurproblemen-voordat-ze-zichtbaar-worden" target="_blank" class="btn-primary">
+                    Read Full Article on AIHub Oost
+                    <i class="fas fa-external-link-alt"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter-archive container">
+        <h2 style="font-size: 2.2rem; margin-bottom: 40px; text-align: center;">Recent Articles</h2>
+        <div class="archive-grid">
+            <div class="archive-item">
+                <h3>The Future of Smart Cities</h3>
+                <p>How satellite monitoring is transforming urban infrastructure management and creating smarter, more resilient cities.</p>
+                <div class="archive-date">December 2024</div>
+            </div>
+            <div class="archive-item">
+                <h3>AI in Transportation</h3>
+                <p>Exploring the role of artificial intelligence in predicting and preventing infrastructure failures before they occur.</p>
+                <div class="archive-date">November 2024</div>
+            </div>
+            <div class="archive-item">
+                <h3>Sustainability Through Technology</h3>
+                <p>How satellite-based monitoring reduces carbon emissions by optimizing maintenance routes and schedules.</p>
+                <div class="archive-date">October 2024</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="subscribe-section">
+        <div class="container">
+            <h2>Stay Informed</h2>
+            <p>Subscribe to our newsletter to receive updates about our latest developments, case studies, and industry insights.</p>
+            <div class="subscribe-form">
+                <form>
+                    <div class="form-group">
+                        <input type="email" placeholder="Enter your email address" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Subscribe Now</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="logo-text-main">WEGtrax</div>
+            <div class="logo-text-tagline">Road condition intelligence</div>
+            <div class="copyright">
+                © 2025 WEGtrax. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const aboutDropdown = document.getElementById('about-dropdown');
+            aboutDropdown.addEventListener('click', function (e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                }
+            });
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth <= 768) {
+                        const navMenu = document.getElementById('nav-menu');
+                        navMenu.classList.remove('active');
+                        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+                        if (mobileMenuToggle) {
+                            mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,2192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEGtrax | Satellite AI for Road Infrastructure</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <style>
+        :root {
+            --color-dark: #0a1a1c;
+            --color-primary: #022128;
+            --color-secondary: #1a4742;
+            --color-accent: #2A7C6D;
+            --color-light: #ffffff;
+            --color-bg: #0a1a1c;
+            --color-card: #111f22;
+            --color-surface: #152B2E;
+            --color-text: #ffffff;
+            --color-text-secondary: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-glow: 0 0 20px rgba(42, 124, 109, 0.25);
+            --shadow-deep: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --border-radius: 10px;
+            --section-spacing: 60px;
+            --container-padding: 20px;
+        }
+
+        .light-theme {
+            --color-dark: #f8fafc;
+            --color-primary: #e8f4f3;
+            --color-secondary: #0d8c7a;
+            --color-accent: #00796b;
+            --color-light: #1a1a1a;
+            --color-bg: #ffffff;
+            --color-card: #ffffff;
+            --color-surface: #f0f4f8;
+            --color-text: #1a1a1a;
+            --color-text-secondary: rgba(26, 26, 26, 0.85);
+            --shadow-deep: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 20px rgba(0, 121, 107, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-weight: 400;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            width: 100%;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 99999;
+            background-color: rgba(10, 26, 28, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(42, 124, 109, 0.2);
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        .light-theme header {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 121, 107, 0.15);
+        }
+
+        .header-scrolled {
+            padding: 10px 0;
+            box-shadow: var(--shadow-deep);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-graphic {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-graphic img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .logo-dark {
+            opacity: 1;
+        }
+
+        .logo-light {
+            opacity: 0;
+        }
+
+        .light-theme .logo-dark {
+            opacity: 0;
+        }
+
+        .light-theme .logo-light {
+            opacity: 1;
+        }
+
+        .logo-container:hover .logo-graphic img {
+            transform: rotate(-3deg) scale(1.05);
+        }
+
+        .logo-text-main {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .light-theme .logo-text-main {
+            color: #32756c;
+        }
+
+        .logo-text-tagline {
+            font-size: 0.7rem;
+            color: var(--color-accent);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--color-accent);
+        }
+
+        /* FIX: Remove duplicate bullet points in list items */
+        .solution-features ul {
+            list-style-type: none !important;
+            padding-left: 0 !important;
+        }
+
+        .solution-features li {
+            color: var(--color-text-secondary);
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            position: relative;
+            padding-left: 20px;
+            line-height: 1.5;
+        }
+
+        .solution-features li:before {
+            content: "•";
+            color: var(--color-accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Active navigation link */
+        nav a.active {
+            color: var(--color-accent);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-accent);
+            border-radius: 1px;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(42, 124, 109, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(42, 124, 109, 0.4);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--color-text);
+            cursor: pointer;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--color-card);
+            min-width: 200px;
+            box-shadow: var(--shadow-deep);
+            border-radius: var(--border-radius);
+            padding: 10px 0;
+            z-index: 1000;
+            border: 1px solid rgba(42, 124, 109, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(42, 124, 109, 0.1);
+            color: var(--color-accent);
+            padding-left: 25px;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            padding: var(--section-spacing) 0;
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+            position: relative;
+            overflow: hidden;
+            margin-top: 60px;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 20%, rgba(42, 124, 109, 0.1) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.1;
+            background: linear-gradient(135deg, var(--color-light) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: 30px;
+            max-width: 550px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            font-size: 1rem;
+            box-shadow: 0 6px 20px rgba(42, 124, 109, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(42, 124, 109, 0.6);
+        }
+
+        /* ========== SECTIONS ========== */
+        section {
+            padding: var(--section-spacing) 0;
+        }
+
+        .section-title {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--color-light) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            max-width: 700px;
+        }
+
+        /* ========== SOLUTIONS SECTION ========== */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .solution-card {
+            background-color: var(--color-card);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transition: var(--transition);
+            border: 1px solid rgba(42, 124, 109, 0.1);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(42, 124, 109, 0.3);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .solution-image {
+            height: 180px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .solution-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .solution-card:hover .solution-image img {
+            transform: scale(1.05);
+        }
+
+        .solution-content {
+            padding: 25px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .solution-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 1.3rem;
+            box-shadow: 0 4px 12px rgba(42, 124, 109, 0.3);
+        }
+
+        .solution-content h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--color-text);
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .solution-features {
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        /* Change this CSS rule */
+        .solution-more-btn {
+            background: transparent;
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: auto;
+            width: fit-content;
+            font-size: 0.9rem;
+            text-decoration: none; /* Add this for links */
+        }
+
+        .solution-more-btn:hover {
+            background: rgba(42, 124, 109, 0.1);
+            transform: translateX(5px);
+            text-decoration: none; /* Add this for links */
+            color: var(--color-accent); /* Keep same color on hover */
+        }
+
+        /* ========== MISSION SECTION ========== */
+        .mission-section {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .mission-item {
+            text-align: center;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--border-radius);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(42, 124, 109, 0.2);
+            transition: var(--transition);
+        }
+
+        .mission-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(42, 124, 109, 0.4);
+        }
+
+        .mission-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 1.5rem;
+            box-shadow: 0 6px 18px rgba(42, 124, 109, 0.3);
+        }
+
+        .mission-item h3 {
+            font-size: 1.3rem;
+            color: var(--color-text);
+            margin-bottom: 10px;
+        }
+
+        .mission-item p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ========== CONTACT SECTION ========== */
+        .contact-section {
+            padding: 100px 0;
+            background: #0b0f19;
+            color: #ffffff;
+        }
+
+        .light-theme .contact-section {
+            background: #eff6f7;
+            color: #333333;
+        }
+
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-top: 50px;
+        }
+
+        .contact-info {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        .contact-info h3 {
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        .contact-details {
+            margin-top: 30px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+
+        .contact-detail:hover {
+            background: rgba(255, 255, 255, 0.12);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .contact-detail-content h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+            color: var(--color-accent);
+        }
+
+        .contact-detail-content p,
+        .contact-detail-content a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+
+        .light-theme .contact-detail-content p,
+        .light-theme .contact-detail-content a {
+            color: #333333;
+        }
+
+        .contact-detail-content a:hover {
+            color: var(--color-accent);
+            text-decoration: underline;
+        }
+
+        /* ========== FOOTER ========== */
+        .site-footer {
+            background: #0b0f19;
+            padding: 80px 0 30px;
+            font-family: "Inter", sans-serif;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .footer-logo {
+            max-width: 360px;
+        }
+
+        .footer-description {
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Social Icons */
+        .footer-social {
+            display: flex;
+            gap: 14px;
+        }
+
+        .footer-social a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 18px;
+            transition: all 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none !important;
+        }
+
+        .footer-social a::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #1f574f, #96cfc5);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .footer-social a i {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-social a:hover {
+            transform: translateY(-6px) scale(1.08);
+            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .footer-social a:hover::before {
+            opacity: 1;
+        }
+
+        /* Links */
+        .footer-links {
+            display: flex;
+            gap: 60px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links-column h4 {
+            color: #ffffff;
+            font-size: 15px;
+            margin-bottom: 14px;
+        }
+
+        .footer-links-column ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links-column li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links-column a {
+            font-size: 14px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            color: #fff
+        }
+
+        .footer-links-column a:hover {
+            color: #ffffff;
+        }
+
+        /* Copyright */
+        .copyright {
+            text-align: center;
+            font-size: 13px;
+            opacity: 0.6;
+            color: #fff;
+            margin-top: 50px;
+        }
+
+        .light-theme .copyright {
+            color: #333;
+        }
+
+        /* ========== THEME TOGGLE ========== */
+        .theme-toggle-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background-color: var(--color-card);
+            border-radius: var(--border-radius);
+            max-width: 900px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 40px;
+            border: 1px solid rgba(42, 124, 109, 0.3);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: var(--color-text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background-color: rgba(42, 124, 109, 0.1);
+            color: var(--color-accent);
+        }
+
+        .modal-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(42, 124, 109, 0.2);
+        }
+
+        .modal-header h3 {
+            font-size: 1.8rem;
+            color: var(--color-text);
+            margin-bottom: 10px;
+        }
+
+        .modal-tagline {
+            color: var(--color-accent);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .modal-body {
+            margin-bottom: 30px;
+        }
+
+        /* FIX: Add modal image section */
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .modal-features {
+            margin-top: 20px;
+        }
+
+        .modal-features h4 {
+            color: var(--color-text);
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .modal-features ul {
+            list-style-type: none;
+        }
+
+        .modal-features li {
+            color: var(--color-text-secondary);
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .modal-features li:before {
+            content: "✓";
+            color: var(--color-accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 992px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+
+            .contact-wrapper {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .solutions-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 40px 0;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background-color: var(--color-card);
+                width: 280px;
+                height: calc(100vh - 70px);
+                padding: 30px;
+                box-shadow: var(--shadow-deep);
+                transition: var(--transition);
+                z-index: 100;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                background: transparent;
+                padding: 10px 0 10px 20px;
+                display: none;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+
+            .theme-toggle-container {
+                top: 75px;
+                right: 15px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+
+            .footer-links {
+                gap: 40px;
+            }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .modal-image {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-title {
+                font-size: 1.6rem;
+            }
+
+            .section-title {
+                margin-bottom: 30px;
+            }
+
+            section {
+                padding: 40px 0;
+            }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .contact-info {
+                padding: 25px;
+            }
+
+            .modal-content {
+                padding: 25px;
+            }
+
+            .modal-image {
+                height: 180px;
+            }
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+
+        .delay-4 {
+            animation-delay: 0.8s;
+        }
+
+        .delay-5 {
+            animation-delay: 1s;
+        }
+
+        .delay-6 {
+            animation-delay: 1.2s;
+        }
+
+        .delay-7 {
+            animation-delay: 1.4s;
+        }
+
+        .delay-8 {
+            animation-delay: 1.6s;
+        }
+
+        /* Hero Section - 70/30 Split Layout */
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 70% 30%;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text {
+            padding-right: 30px;
+        }
+
+        .hero-image {
+            position: relative;
+        }
+
+        .image-container {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-deep);
+            border: 1px solid rgba(42, 124, 109, 0.3);
+            height: 100%;
+            min-height: 350px;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .image-badge {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(15, 34, 37, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 12px 20px;
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--color-accent);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: 1px solid rgba(42, 124, 109, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .image-badge i {
+            font-size: 1.2rem;
+        }
+
+        /* Hero Stats */
+        .hero-stats {
+            display: flex;
+            gap: 30px;
+            margin: 30px 0;
+            padding: 20px 0;
+            border-top: 1px solid rgba(42, 124, 109, 0.2);
+            border-bottom: 1px solid rgba(42, 124, 109, 0.2);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--color-accent);
+            line-height: 1;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+        }
+
+        /* Hover effect */
+        .image-container:hover .hero-img {
+            transform: scale(1.05);
+        }
+
+        /* Light theme adjustments */
+        .light-theme .image-badge {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--color-accent);
+            border: 1px solid rgba(0, 121, 107, 0.2);
+        }
+
+        .light-theme .hero-stats {
+            border-top: 1px solid rgba(0, 121, 107, 0.15);
+            border-bottom: 1px solid rgba(0, 121, 107, 0.15);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .hero-grid {
+                grid-template-columns: 65% 35%;
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .hero-text {
+                padding-right: 0;
+                text-align: center;
+            }
+
+            .hero-stats {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .image-container {
+                min-height: 300px;
+                max-width: 500px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-grid {
+                gap: 30px;
+            }
+
+            .hero-stats {
+                gap: 15px;
+            }
+
+            .stat-number {
+                font-size: 1.5rem;
+            }
+
+            .image-container {
+                min-height: 250px;
+            }
+
+            .image-badge {
+                padding: 10px 15px;
+                font-size: 0.85rem;
+                bottom: 15px;
+                right: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero-stats {
+                flex-direction: column;
+                gap: 20px;
+                align-items: center;
+            }
+
+            .stat-item {
+                width: 100%;
+                padding: 10px 0;
+            }
+
+            .image-container {
+                min-height: 220px;
+            }
+        }
+
+        /* Active nav link */
+        nav a.active {
+            color: #bef8ee;
+            font-weight: 600;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--color-accent);
+            border-radius: 2px;
+        }
+
+        /* Scroll Animation Classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animated {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Icon Animations */
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* Animation classes for icons */
+        .icon-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .icon-spin {
+            animation: spin 8s linear infinite;
+        }
+
+        .icon-bounce {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        /* Coming Soon button styles */
+        .coming-soon {
+            background: rgba(128, 128, 128, 0.1);
+            color: var(--color-text-secondary);
+            border: 1px solid rgba(128, 128, 128, 0.3);
+            cursor: not-allowed;
+        }
+
+        .coming-soon:hover {
+            background: rgba(128, 128, 128, 0.2);
+            transform: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo-container">
+                <div class="logo-graphic">
+                    <!-- Dark theme logo (shown by default) -->
+                    <img src="img/wegtrax_logo_dark.png" alt="WEGtrax Logo" class="logo-dark" style="background: transparent;">
+                    <!-- Light theme logo (hidden by default) -->
+                    <img src="img/wegtrax_logo.png" alt="WEGtrax Logo" class="logo-light" style="background: transparent;">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-text-main">WEGtrax</div>
+                    <div class="logo-text-tagline">Road condition intelligence</div>
+                </div>
+            </a>
+
+            <button class="mobile-menu-btn" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html" class="nav-home">Home</a></li>
+                    <li><a href="#solutions" class="nav-solutions">Solutions</a></li>
+                    <li class="dropdown" id="about-dropdown">
+                        <a href="#about" class="nav-about">About Us <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="vision.html">Our Vision</a>
+                            <a href="newsletter.html">Newsletter</a>
+                        </div>
+                    </li>
+                    <li><a href="#contact" class="nav-cta nav-contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+   <!-- Hero Section -->
+<section id="home" class="hero" style="background-image: url('img/Gemini_Generated_Image_8o7ai58o7ai58o7a (1) 1.png'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
+    <div class="hero-overlay"></div>
+    <div class="container">
+        <div class="hero-content animate-fade-in">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <h1 class="hero-title">Road condition intelligence<br><span>at national scale</span></h1>
+                    <p class="hero-subtitle">WEGtrax provides an advanced satellite-based AI platform for comprehensive road infrastructure monitoring. We detect road issues before they become hazards, enabling predictive maintenance and safer transportation networks.</p>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">24/7</div>
+                            <div class="stat-label">Monitoring</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Coverage</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">40%</div>
+                            <div class="stat-label">Cost Reduction</div>
+                        </div>
+                    </div>
+                    <a href="#problem" class="cta-button">
+                        <span>Learn More</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <!-- Solutions Section -->
+        <section id="solutions">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Solutions</h2>
+                    <p class="section-subtitle">Comprehensive road monitoring solutions powered by satellite data and AI</p>
+                </div>
+
+                <div class="solutions-grid">
+                    <!-- Solution 1: Road Roughness Estimation -->
+                    <div class="solution-card animate-fade-in delay-1" style="border-top: 5px solid var(--color-accent);">
+                        <div class="solution-image">
+                            <img src="img/road roughness estimation 1.png" alt="Road Roughness Estimation">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-road"></i>
+                            </div>
+                            <h3>Road Roughness Estimation</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>National Level monitoring & early warning</li>
+                                    <li>Using SAR Pixel intensity (dB values)</li>
+                                    <li>AI-powered IRI estimation</li>
+                                    <li>Continuous road quality assessment</li>
+                                </ul>
+                            </div>
+                        <a href="solution.html?id=1&title=Road%20Roughness%20Estimation&img=img/road%20roughness%20estimation 1.png" class="solution-more-btn">
+                            More Details
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        </div>
+                    </div>
+
+                    <!-- Solution 2: Road Deformation -->
+                    <div class="solution-card animate-fade-in delay-2">
+                        <div class="solution-image">
+                            <img src="img/Road Deformation 1.png" alt="Road Deformation">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-mountain"></i>
+                            </div>
+                            <h3>Road Deformation (Subsidence, Sinkholes)</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>Using high resolution InSAR technology</li>
+                                    <li>Vertical deformation detection</li>
+                                    <li>Traditional fleets cannot measure mm-level displacement continuously</li>
+                                    <li>Sinkhole detection & early warning</li>
+                                </ul>
+                            </div>
+                          <a href="solution.html?id=2&title=Road%20Deformation%20(Subsidence,%20Sinkholes)&img=img/Road%20Deformation.png" class="solution-more-btn">
+                             More Details
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        </div>
+                    </div>
+
+                    <!-- Solution 3: Lane Marking Degradation -->
+                    <div class="solution-card animate-fade-in delay-3">
+                        <div class="solution-image">
+                            <img src="img/lane marking degradation 1.png" alt="Lane Marking">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-traffic-light"></i>
+                            </div>
+                            <h3>Lane Marking Degradation (Optical AI)</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>Lane marking using high-resolution optical imagery</li>
+                                    <li>Presence/Absence classification</li>
+                                    <li>Lane marking visibility score</li>
+                                    <li>Automated safety compliance monitoring</li>
+                                </ul>
+                            </div>
+                        <a href="solution.html?id=3&title=Lane%20Marking%20Degradation%20(Optical%20AI)&img=img/lane%20marking%20degradation.jpg" class="solution-more-btn">
+                            More Details
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        </div>
+                    </div>
+
+                    <!-- Solution 4: Predictive AI Forecasting -->
+                    <div class="solution-card animate-fade-in delay-4">
+                        <div class="solution-image">
+                            <img src="img/Predictive AI forecasting 1.png" alt="Predictive AI">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>Predictive AI Forecasting for Pavement Degradation</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>Predict remaining useful life</li>
+                                    <li>Predict Future distress levels</li>
+                                    <li>Predict when a segment will need resurfacing</li>
+                                    <li>Machine learning based pavement degradation forecasting</li>
+                                </ul>
+                            </div>
+                        <a href="solution.html?id=4&title=Predictive%20AI%20Forecasting%20for%20Pavement%20Degradation&img=img/Predictive%20AI%20forecasting.jpg" class="solution-more-btn">
+    More Details
+    <i class="fas fa-arrow-right"></i>
+</a>
+                        </div>
+                    </div>
+
+                    <!-- Solution 5: Surface Distress Detection -->
+                    <div class="solution-card animate-fade-in delay-5">
+                        <div class="solution-image">
+                            <img src="img/Surface Distress Detection 1.png" alt="Surface Distress">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <h3>Surface Distress Detection</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>Cracking Density detection (longitudinal, transverse, alligator)</li>
+                                    <li>Rutting/Depressions monitoring</li>
+                                    <li>Potholes clusters identification</li>
+                                    <li>Using SAR amplitude change + high-resolution optical imagery</li>
+                                    <li>Predict patterns & distress in Severity Levels</li>
+                                </ul>
+                            </div>
+                            <!-- <button class="solution-more-btn coming-soon">
+                                Details Coming Soon
+                                <i class="fas fa-clock"></i>
+                            </button> -->
+                        </div>
+                    </div>
+
+                    <!-- Solution 6: Flood & Moisture Detection -->
+                    <div class="solution-card animate-fade-in delay-6">
+                        <div class="solution-image">
+                            <img src="img/Flood, waterlogging 1.png" alt="Flood Detection">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-water"></i>
+                            </div>
+                            <h3>Flood, Water Logging & Moisture Detection</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>Flooded highway segments detection</li>
+                                    <li>Water under pavement monitoring</li>
+                                    <li>Moisture weakening assessment</li>
+                                    <li>Impact assessment for emergency response</li>
+                                </ul>
+                            </div>
+                            <!-- <button class="solution-more-btn coming-soon">
+                                Details Coming Soon
+                                <i class="fas fa-clock"></i>
+                            </button> -->
+                        </div>
+                    </div>
+
+                    <!-- Solution 7: Road Blockage & Landslides -->
+                    <div class="solution-card animate-fade-in delay-7">
+                        <div class="solution-image">
+                            <img src="img/road blockage, landslides 1.png" alt="Road Blockage">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-road-barrier"></i>
+                            </div>
+                            <h3>Road Blockage, Landslides and Obstruction Detection</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>Landslides on mountain roads detection</li>
+                                    <li>Fallen trees/debris identification</li>
+                                    <li>Blocked highway segments monitoring</li>
+                                    <li>Emergency response planning support</li>
+                                </ul>
+                            </div>
+                            <!-- <button class="solution-more-btn coming-soon">
+                                Details Coming Soon
+                                <i class="fas fa-clock"></i>
+                            </button> -->
+                        </div>
+                    </div>
+
+                    <!-- Solution 8: Construction Zone Monitoring -->
+                    <div class="solution-card animate-fade-in delay-8">
+                        <div class="solution-image">
+                            <img src="img/Construction zone monitoring 1.png" alt="Construction Monitoring">
+                        </div>
+                        <div class="solution-content">
+                            <div class="solution-icon">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <h3>Construction Zone Monitoring & Progress Tracking</h3>
+                            <div class="solution-features">
+                                <ul>
+                                    <li>Detect active construction sites</li>
+                                    <li>Progress tracking month to month</li>
+                                    <li>Delay patterns identification</li>
+                                    <li>Project timeline compliance monitoring</li>
+                                </ul>
+                            </div>
+                            <!-- <button class="solution-more-btn coming-soon">
+                                Details Coming Soon
+                                <i class="fas fa-clock"></i>
+                            </button> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Section -->
+        <section id="mission" class="mission-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Our Mission</h2>
+                    <p class="section-subtitle">Providing comprehensive road monitoring through a single,
+                         integrated platform that addresses all infrastructure assessment needs.
+                    </p>
+
+
+                </div>
+
+                <div class="mission-grid">
+                    <!-- <div class="mission-item animate-fade-in delay-1">
+                        <div class="mission-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h3>One Service Problem Statement</h3>
+                        <p>Providing comprehensive road monitoring through a single, integrated platform that addresses all infrastructure assessment needs.</p>
+                    </div> -->
+
+                    <div class="mission-item animate-fade-in delay-2">
+                        <div class="mission-icon">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                        </div>
+                        <h3>Scalability</h3>
+                        <p>Designed to monitor entire national road networks with consistent quality and frequency, from local roads to highways.</p>
+                    </div>
+
+                    <div class="mission-item animate-fade-in delay-3">
+                        <div class="mission-icon">
+                            <i class="fas fa-leaf"></i>
+                        </div>
+                        <h3>CO₂ Emission Reduction</h3>
+                        <p>Eliminating manual surveys and optimizing maintenance routes to significantly reduce carbon footprint.</p>
+                    </div>
+
+                    <div class="mission-item animate-fade-in">
+                        <div class="mission-icon">
+                            <i class="fas fa-dollar-sign"></i>
+                        </div>
+                        <h3>Cost Efficiency</h3>
+                        <p>Reducing maintenance costs by up to 40% through predictive analytics and optimized resource allocation.</p>
+                    </div>
+
+                    <!-- <div class="mission-item animate-fade-in delay-1">
+                        <div class="mission-icon">
+                            <i class="fas fa-snowflake"></i>
+                        </div>
+                        <h3>Cooling Effect</h3>
+                        <p>Monitoring road surface temperatures to identify heat islands and optimize urban cooling strategies.</p>
+                    </div> -->
+
+                    <div class="mission-item animate-fade-in delay-2">
+                        <div class="mission-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <h3>Recursive Maintenance</h3>
+                        <p>Continuous monitoring and automated feedback loops for adaptive maintenance planning and execution.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Contact Us</h2>
+                    <p class="section-subtitle">Get in touch to learn more about our solutions</p>
+                </div>
+
+                <div class="contact-wrapper animate-fade-in">
+                    <div class="contact-info">
+                        <h3>Get In Touch</h3>
+                        <p>Ready to transform your road infrastructure monitoring with satellite technology? Contact us for demos, partnerships, or more information.</p>
+                        
+                        <div class="contact-details">
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>Email</h4>
+                                    <a href="mailto:info@wegtrax.com">info@wegtrax.com</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>Phone</h4>
+                                    <p>+31 612957795</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fab fa-linkedin"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>LinkedIn</h4>
+                                    <a href="https://www.linkedin.com/company/wegtrax" target="_blank">Follow us on LinkedIn</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>Location</h4>
+                                    <p>Netherlands</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact-info">
+                        <h3>Stay Updated</h3>
+                        <p>Subscribe to our newsletter to receive updates about our latest developments, case studies, and industry insights.</p>
+                        
+                        <div class="contact-details">
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fas fa-newspaper"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>Newsletter</h4>
+                                    <a href="newsletter.html">Read our latest articles</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>Our Vision</h4>
+                                    <a href="vision.html">Learn about our mission</a>
+                                </div>
+                            </div>
+
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fas fa-handshake"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>Partnerships</h4>
+                                    <p>Interested in collaborating?</p>
+                                </div>
+                            </div>
+
+                            <div class="contact-detail">
+                                <div class="contact-icon">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                <div class="contact-detail-content">
+                                    <h4>Pilot Projects</h4>
+                                    <p>Request a demonstration</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <!-- Brand -->
+              <div class="footer-logo">
+                    <div class="logo-text-main">WEGtrax</div>
+                    <div class="logo-text-tagline">Road condition intelligence</div>
+                    <p class="footer-description">
+                        Satellite-based AI platform for comprehensive road infrastructure
+                        monitoring, enabling predictive maintenance worldwide.
+                    </p>
+
+                    <!-- Social Icons -->
+                    <div class="footer-social">
+                       
+                        <a href="https://instagram.com" target="_blank" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://linkedin.com" target="_blank" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" aria-label="YouTube">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h4>Navigation</h4>
+                        <ul>
+                            <li><a href="index.html">Home</a></li>
+                            <li><a href="#solutions">Solutions</a></li>
+                            <li><a href="vision.html">Our Vision</a></li>
+                            <li><a href="newsletter.html">Newsletter</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-links-column">
+                        <h4>Solutions</h4>
+                        <ul>
+                            <li><a href="#solutions">Road Roughness</a></li>
+                            <li><a href="#solutions">Deformation Mapping</a></li>
+                            <li><a href="#solutions">Lane Marking</a></li>
+                            <li><a href="#solutions">Predictive AI</a></li>
+                            <li><a href="#solutions">Surface Distress</a></li>
+                            <li><a href="#solutions">Flood Detection</a></li>
+                            <li><a href="#solutions">Road Blockage</a></li>
+                            <li><a href="#solutions">Construction Monitoring</a></li>
+                        </ul>
+                    </div>
+
+                    <div class="footer-links-column">
+                        <h4>Contact</h4>
+                        <ul>
+                            <li><a href="mailto:info@wegtrax.com">Email Us</a></li>
+                            <li><a href="https://www.linkedin.com/company/wegtrax" target="_blank">LinkedIn</a></li>
+                            <li><a href="#contact">Get In Touch</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Copyright -->
+            <div class="copyright">
+                © 2025 WEGtrax. All rights reserved. Satellite-Based AI Platform for Road Infrastructure Monitoring.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Solution Details Modals -->
+    <!-- Modal for Solution 1 -->
+    <div class="modal" id="modal-1">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header">
+                <h3>Road Roughness Estimation</h3>
+                <p class="modal-tagline">National Level monitoring & early warning system</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="img/road roughness estimation 1.png" alt="Road Roughness Estimation">
+                </div>
+                <p>Our AI-powered Road Roughness Estimation provides comprehensive monitoring of road quality at national scale using Synthetic Aperture Radar (SAR) technology and AI algorithms.</p>
+                
+                <div class="modal-features">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>National Scale Monitoring:</strong> Complete coverage of road networks across entire countries</li>
+                        <li><strong>Early Warning System:</strong> Detect road quality degradation before it becomes critical</li>
+                        <li><strong>SAR Technology:</strong> Uses SAR Pixel intensity (dB values) for accurate measurements</li>
+                        <li><strong>AI-Powered IRI Estimation:</strong> Machine learning models for International Roughness Index calculation</li>
+                        <li><strong>Continuous Assessment:</strong> 24/7 monitoring of road surface conditions</li>
+                        <li><strong>Historical Analysis:</strong> Track road quality trends over time</li>
+                        <li><strong>Maintenance Planning:</strong> Data-driven decision making for road maintenance</li>
+                        <li><strong>Validation:</strong> Ground truth validated with high accuracy</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-features">
+                    <h4>Technology Stack:</h4>
+                    <ul>
+                        <li>Synthetic Aperture Radar (SAR) satellite data</li>
+                        <li>Convolutional Neural Networks (CNN) for pattern recognition</li>
+                        <li>Cloud-based processing infrastructure</li>
+                        <li>Real-time data streaming and analysis</li>
+                        <li>API integration for seamless data sharing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Solution 2 -->
+    <div class="modal" id="modal-2">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header">
+                <h3>Road Deformation & Subsidence Mapping</h3>
+                <p class="modal-tagline">Where the ground itself is moving</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="img/Road Deformation.png" alt="Road Deformation">
+                </div>
+                <p>Our advanced InSAR technology detects millimeter-scale ground deformation and subsidence that could affect road stability, providing early warnings for potential infrastructure failures.</p>
+                
+                <div class="modal-features">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>High-Resolution InSAR:</strong> Millimeter-level deformation detection</li>
+                        <li><strong>Vertical Deformation Monitoring:</strong> Track ground movement in vertical direction</li>
+                        <li><strong>Continuous Coverage:</strong> Traditional fleets cannot measure mm-level displacement continuously</li>
+                        <li><strong>Early Warning System:</strong> Detect sinkholes and subsidence risks early</li>
+                        <li><strong>Infrastructure Stability:</strong> Monitor bridges, tunnels, and road foundations</li>
+                        <li><strong>Time-Series Analysis:</strong> Track deformation patterns over time</li>
+                        <li><strong>Risk Assessment:</strong> Evaluate potential impact on road infrastructure</li>
+                        <li><strong>Geological Integration:</strong> Combine with geological data for comprehensive analysis</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-features">
+                    <h4>Applications:</h4>
+                    <ul>
+                        <li>Bridge and overpass stability monitoring</li>
+                        <li>Tunnel deformation detection and safety assessment</li>
+                        <li>Landslide risk evaluation for mountain roads</li>
+                        <li>Construction impact analysis on surrounding infrastructure</li>
+                        <li>Natural disaster response and recovery planning</li>
+                        <li>Urban development impact assessment</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Solution 3 -->
+    <div class="modal" id="modal-3">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header">
+                <h3>Lane Marking Degradation</h3>
+                <p class="modal-tagline">What drivers rely on at night</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="img/lane marking degradation 1.png" alt="Lane Marking">
+                </div>
+                <p>Using high-resolution optical satellite imagery, our AI analyzes lane marking visibility and deterioration to ensure road safety markings remain effective and compliant with transportation standards.</p>
+                
+                <div class="modal-features">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>High-Resolution Optical Imagery:</strong> Detailed satellite imagery for precise analysis</li>
+                        <li><strong>Presence/Absence Classification:</strong> Automatic detection of lane marking existence</li>
+                        <li><strong>Visibility Scoring:</strong> Quantitative assessment of lane marking visibility</li>
+                        <li><strong>Automated Compliance Monitoring:</strong> Ensure adherence to safety standards</li>
+                        <li><strong>Night-Time Visibility Assessment:</strong> Evaluate markings under low-light conditions</li>
+                        <li><strong>Weather Impact Analysis:</strong> Assess marking durability under various weather conditions</li>
+                        <li><strong>Maintenance Priority:</strong> Identify areas needing immediate attention</li>
+                        <li><strong>Historical Tracking:</strong> Monitor degradation patterns over time</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-features">
+                    <h4>Safety Benefits:</h4>
+                    <ul>
+                        <li>Reduced accident rates through better visibility</li>
+                        <li>Compliance with international transportation safety standards</li>
+                        <li>Proactive maintenance planning before accidents occur</li>
+                        <li>Improved night-time driving conditions and safety</li>
+                        <li>Enhanced road safety for all users including pedestrians and cyclists</li>
+                        <li>Optimized road marking maintenance budgets</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Solution 4 -->
+    <div class="modal" id="modal-4">
+        <div class="modal-content">
+            <button class="close-modal">&times;</button>
+            <div class="modal-header">
+                <h3>Predictive AI Forecasting for Pavement Degradation</h3>
+                <p class="modal-tagline">Predict the future of your roads</p>
+            </div>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img src="img/Predictive AI forecasting.jpg" alt="Predictive AI">
+                </div>
+                <p>Our advanced AI algorithms predict pavement deterioration before visible damage occurs, enabling preventive maintenance and extending road lifespan through data-driven decision making.</p>
+                
+                <div class="modal-features">
+                    <h4>Key Features:</h4>
+                    <ul>
+                        <li><strong>Remaining Useful Life Prediction:</strong> Estimate pavement lifespan with high accuracy</li>
+                        <li><strong>Future Distress Forecasting:</strong> Predict distress levels months or years in advance</li>
+                        <li><strong>Resurfacing Timing:</strong> Determine optimal timing for road resurfacing</li>
+                        <li><strong>Machine Learning Models:</strong> Trained on extensive historical pavement data</li>
+                        <li><strong>Multi-Factor Analysis:</strong> Integrate weather, traffic, and environmental data</li>
+                        <li><strong>Cost Optimization:</strong> Minimize maintenance costs through optimal scheduling</li>
+                        <li><strong>Risk-Based Prioritization:</strong> Focus resources on highest-risk areas first</li>
+                        <li><strong>Budget Planning Tools:</strong> Support long-term infrastructure planning</li>
+                    </ul>
+                </div>
+                
+                <div class="modal-features">
+                    <h4>Economic Benefits:</h4>
+                    <ul>
+                        <li>Up to 40% reduction in maintenance costs through preventive strategies</li>
+                        <li>Extended pavement life through timely interventions</li>
+                        <li>Optimized resource allocation and budget utilization</li>
+                        <li>Reduced emergency repair expenses and road closures</li>
+                        <li>Improved return on infrastructure investment</li>
+                        <li>Reduced traffic disruptions and associated economic costs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            // Load saved theme from localStorage
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                body.classList.add('light-theme');
+                themeToggle.querySelector('i').className = 'fas fa-sun';
+            }
+
+            themeToggle.addEventListener('click', function () {
+                body.classList.toggle('light-theme');
+                const icon = themeToggle.querySelector('i');
+                const isLightTheme = body.classList.contains('light-theme');
+                
+                if (isLightTheme) {
+                    icon.className = 'fas fa-sun';
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    icon.className = 'fas fa-moon';
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const aboutDropdown = document.getElementById('about-dropdown');
+
+            mobileMenuToggle.addEventListener('click', function () {
+                navMenu.classList.toggle('active');
+                mobileMenuToggle.innerHTML = navMenu.classList.contains('active')
+                    ? '<i class="fas fa-times"></i>'
+                    : '<i class="fas fa-bars"></i>';
+            });
+
+            // Mobile dropdown handling
+            aboutDropdown.addEventListener('click', function (e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                }
+            });
+
+            // Close mobile menu on link click
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('active');
+                        mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                        aboutDropdown.classList.remove('active');
+                    }
+                });
+            });
+
+            // Header scroll effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', function () {
+                if (window.scrollY > 50) {
+                    header.classList.add('header-scrolled');
+                } else {
+                    header.classList.remove('header-scrolled');
+                }
+            });
+
+            // Active navigation while scrolling
+            function updateActiveNav() {
+                const sections = document.querySelectorAll('section');
+                const navLinks = document.querySelectorAll('nav a:not(.nav-cta)');
+                
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    const sectionHeight = section.clientHeight;
+                    
+                    if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                        currentSection = section.getAttribute('id');
+                    }
+                });
+                
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${currentSection}` || 
+                        (currentSection === 'home' && link.getAttribute('href') === 'index.html')) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // Update active nav
+                        updateActiveNav();
+                    }
+                });
+            });
+
+            // Update active nav on scroll
+            window.addEventListener('scroll', updateActiveNav);
+            
+            // Initialize active nav
+            updateActiveNav();
+
+            // Intersection Observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function (entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-fade-in');
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all animated elements
+            document.querySelectorAll('.animate-fade-in').forEach(element => {
+                observer.observe(element);
+            });
+
+            // Initialize all animations
+            document.querySelectorAll('.solution-card, .mission-item').forEach((element, index) => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(20px)';
+            });
+        });
+
+        // Handle navigation for separate pages
+        function navigateToPage(page) {
+            if (page === 'vision.html' || page === 'newsletter.html') {
+                window.location.href = page;
+            }
+        }
+    </script>
+</body>
+</html>

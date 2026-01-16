@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solution Details | WEGtrax</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-dark: #0a1a1c;
+            --color-primary: #022128;
+            --color-secondary: #1a4742;
+            --color-accent: #2A7C6D;
+            --color-light: #ffffff;
+            --color-bg: #0a1a1c;
+            --color-card: #111f22;
+            --color-surface: #152B2E;
+            --color-text: #ffffff;
+            --color-text-secondary: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-glow: 0 0 20px rgba(42, 124, 109, 0.25);
+            --shadow-deep: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --border-radius: 10px;
+            --section-spacing: 60px;
+            --container-padding: 20px;
+        }
+
+        .light-theme {
+            --color-dark: #f8fafc;
+            --color-primary: #e8f4f3;
+            --color-secondary: #0d8c7a;
+            --color-accent: #00796b;
+            --color-light: #1a1a1a;
+            --color-bg: #ffffff;
+            --color-card: #ffffff;
+            --color-surface: #f0f4f8;
+            --color-text: #1a1a1a;
+            --color-text-secondary: rgba(26, 26, 26, 0.85);
+            --shadow-deep: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-glow: 0 0 20px rgba(0, 121, 107, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            width: 100%;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 99999;
+            background-color: rgba(10, 26, 28, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(42, 124, 109, 0.2);
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        .light-theme header {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 121, 107, 0.15);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-graphic {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-graphic img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .logo-container:hover .logo-graphic img {
+            transform: rotate(-3deg) scale(1.05);
+        }
+
+        .logo-text-main {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .light-theme .logo-text-main {
+            color: #32756c;
+        }
+
+        .logo-text-tagline {
+            font-size: 0.7rem;
+            color: var(--color-accent);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Active navigation link */
+        nav a.active {
+            color: var(--color-accent);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-accent);
+            border-radius: 1px;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(42, 124, 109, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(42, 124, 109, 0.4);
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--color-card);
+            min-width: 200px;
+            box-shadow: var(--shadow-deep);
+            border-radius: var(--border-radius);
+            padding: 10px 0;
+            z-index: 1000;
+            border: 1px solid rgba(42, 124, 109, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(42, 124, 109, 0.1);
+            color: var(--color-accent);
+            padding-left: 25px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--color-text);
+            cursor: pointer;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--color-accent);
+            border: 1px solid var(--color-accent);
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            margin-top: 30px;
+        }
+
+        .back-button:hover {
+            background: rgba(42, 124, 109, 0.1);
+            transform: translateX(-5px);
+        }
+
+        /* Solution Details */
+        .solution-details {
+            padding: 120px 0 60px;
+        }
+
+        .solution-hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        .solution-image-large {
+            width: 100%;
+            height: 400px;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-deep);
+        }
+
+        .solution-image-large img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .solution-image-large:hover img {
+            transform: scale(1.05);
+        }
+
+        .solution-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--color-light) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .solution-tagline {
+            font-size: 1.2rem;
+            color: var(--color-accent);
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        .solution-description {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .solution-features {
+            background: var(--color-card);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(42, 124, 109, 0.1);
+        }
+
+        .solution-features h2 {
+            font-size: 1.8rem;
+            color: var(--color-text);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .solution-features h2 i {
+            color: var(--color-accent);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+
+        .feature-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+
+        .feature-item h3 {
+            color: var(--color-accent);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .feature-item p {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .solution-benefits {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+            border-radius: var(--border-radius);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .solution-benefits h2 {
+            font-size: 1.8rem;
+            color: var(--color-text);
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .benefits-list {
+            list-style-type: none;
+        }
+
+        .benefits-list li {
+            color: var(--color-text-secondary);
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .benefits-list li:before {
+            content: "✓";
+            color: var(--color-accent);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle-container {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .theme-toggle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 992px) {
+            .solution-hero {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .solution-image-large {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .solution-header h1 {
+                font-size: 2rem;
+            }
+            
+            .solution-features,
+            .solution-benefits {
+                padding: 30px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background-color: var(--color-card);
+                width: 280px;
+                height: calc(100vh - 70px);
+                padding: 30px;
+                box-shadow: var(--shadow-deep);
+                transition: var(--transition);
+                z-index: 100;
+            }
+
+            nav ul.active {
+                right: 0;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                background: transparent;
+                padding: 10px 0 10px 20px;
+                display: none;
+            }
+
+            .dropdown:hover .dropdown-content {
+                display: none;
+            }
+
+            .dropdown.active .dropdown-content {
+                display: block;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .solution-details {
+                padding: 100px 0 40px;
+            }
+            
+            .solution-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .solution-tagline {
+                font-size: 1rem;
+            }
+            
+            .solution-features,
+            .solution-benefits {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle-container">
+        <button class="theme-toggle" id="themeToggle">
+            <i class="fas fa-moon"></i>
+        </button>
+    </div>
+
+    <!-- Header with the same navigation as index.html -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo-container">
+                <div class="logo-graphic">
+                    <img src="img/wegtrax_logo_dark.png" alt="WEGtrax Logo" style="background: transparent;">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-text-main">WEGtrax</div>
+                    <div class="logo-text-tagline">Road condition intelligence</div>
+                </div>
+            </a>
+
+            <button class="mobile-menu-btn" id="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html" class="nav-home">Home</a></li>
+                    <li><a href="index.html#solutions" class="nav-solutions active">Solutions</a></li>
+                    <li class="dropdown" id="about-dropdown">
+                        <a href="#about" class="nav-about">About Us <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="vision.html">Our Vision</a>
+                            <a href="newsletter.html">Newsletter</a>
+                        </div>
+                    </li>
+                    <li><a href="index.html#contact" class="nav-cta nav-contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Solution Details -->
+    <section class="solution-details">
+        <div class="container">
+            <div class="solution-hero">
+                <div class="solution-image-large" id="solutionImage">
+                    <!-- Image will be loaded by JavaScript -->
+                </div>
+                
+                <div class="solution-header">
+                    <h1 id="solutionTitle">Loading Solution Details...</h1>
+                    <p class="solution-tagline" id="solutionTagline"></p>
+                    <p class="solution-description" id="solutionDescription"></p>
+                </div>
+            </div>
+
+            <div class="solution-features">
+                <h2><i class="fas fa-star"></i> Key Features</h2>
+                <div class="features-grid" id="keyFeatures">
+                    <!-- Features will be loaded by JavaScript -->
+                </div>
+            </div>
+
+            <div class="solution-benefits">
+                <h2><i class="fas fa-check-circle"></i> Benefits</h2>
+                <ul class="benefits-list" id="benefitsList">
+                    <!-- Benefits will be loaded by JavaScript -->
+                </ul>
+            </div>
+
+            <a href="index.html#solutions" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Solutions
+            </a>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const body = document.body;
+
+            themeToggle.addEventListener('click', function () {
+                body.classList.toggle('light-theme');
+                const icon = themeToggle.querySelector('i');
+                if (body.classList.contains('light-theme')) {
+                    icon.className = 'fas fa-sun';
+                } else {
+                    icon.className = 'fas fa-moon';
+                }
+            });
+
+            // Mobile menu toggle
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const aboutDropdown = document.getElementById('about-dropdown');
+
+            mobileMenuToggle.addEventListener('click', function () {
+                navMenu.classList.toggle('active');
+                mobileMenuToggle.innerHTML = navMenu.classList.contains('active')
+                    ? '<i class="fas fa-times"></i>'
+                    : '<i class="fas fa-bars"></i>';
+            });
+
+            // Mobile dropdown handling
+            aboutDropdown.addEventListener('click', function (e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                }
+            });
+
+            // Close mobile menu on link click
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth <= 768) {
+                        navMenu.classList.remove('active');
+                        mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                    }
+                });
+            });
+
+            // Get URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            const solutionId = urlParams.get('id');
+            const solutionTitle = urlParams.get('title');
+            const solutionImg = urlParams.get('img');
+
+            // Solution data
+            const solutions = {
+                '1': {
+                    title: 'Road Roughness Estimation',
+                    tagline: 'National Level monitoring & early warning system',
+                    description: 'Our AI-powered Road Roughness Estimation provides comprehensive monitoring of road quality at national scale using Synthetic Aperture Radar (SAR) technology and AI algorithms.',
+                    image: 'img/road roughness estimation 1.png',
+                    features: [
+                        {
+                            title: 'National Scale Monitoring',
+                            description: 'Complete coverage of road networks across entire countries with consistent quality assessment.'
+                        },
+                        {
+                            title: 'SAR Technology',
+                            description: 'Uses SAR Pixel intensity (dB values) for accurate measurements independent of weather or lighting conditions.'
+                        },
+                        {
+                            title: 'AI-Powered IRI Estimation',
+                            description: 'Machine learning models for International Roughness Index calculation with high accuracy.'
+                        },
+                        {
+                            title: 'Continuous Assessment',
+                            description: '24/7 monitoring of road surface conditions with real-time data streaming and analysis.'
+                        }
+                    ],
+                    benefits: [
+                        'Early detection of road quality degradation before it becomes critical',
+                        'Data-driven decision making for road maintenance planning',
+                        'Reduced maintenance costs through optimized scheduling',
+                        'Improved road safety and reduced vehicle wear and tear',
+                        'Historical trend analysis for long-term infrastructure planning',
+                        'API integration for seamless data sharing with existing systems'
+                    ]
+                },
+                '2': {
+                    title: 'Road Deformation (Subsidence, Sinkholes)',
+                    tagline: 'Where the ground itself is moving',
+                    description: 'Our advanced InSAR technology detects millimeter-scale ground deformation and subsidence that could affect road stability, providing early warnings for potential infrastructure failures.',
+                    image: 'img/Road Deformation 1.png',
+                    features: [
+                        {
+                            title: 'High-Resolution InSAR',
+                            description: 'Millimeter-level deformation detection using advanced satellite interferometry.'
+                        },
+                        {
+                            title: 'Vertical Deformation Monitoring',
+                            description: 'Track ground movement in vertical direction with unprecedented accuracy.'
+                        },
+                        {
+                            title: 'Continuous Coverage',
+                            description: 'Traditional fleets cannot measure mm-level displacement continuously like our satellite system.'
+                        },
+                        {
+                            title: 'Early Warning System',
+                            description: 'Detect sinkholes and subsidence risks early to prevent infrastructure failures.'
+                        }
+                    ],
+                    benefits: [
+                        'Prevention of catastrophic infrastructure failures',
+                        'Early warning for sinkholes and ground instability',
+                        'Monitoring of bridge and tunnel stability',
+                        'Construction impact analysis on surrounding infrastructure',
+                        'Natural disaster response and recovery planning',
+                        'Urban development impact assessment'
+                    ]
+                },
+                '3': {
+                    title: 'Lane Marking Degradation (Optical AI)',
+                    tagline: 'What drivers rely on at night',
+                    description: 'Using high-resolution optical satellite imagery, our AI analyzes lane marking visibility and deterioration to ensure road safety markings remain effective and compliant with transportation standards.',
+                    image: 'img/lane marking degradation.jpg',
+                    features: [
+                        {
+                            title: 'High-Resolution Optical Imagery',
+                            description: 'Detailed satellite imagery for precise analysis of lane marking conditions.'
+                        },
+                        {
+                            title: 'Presence/Absence Classification',
+                            description: 'Automatic detection of lane marking existence and classification.'
+                        },
+                        {
+                            title: 'Visibility Scoring',
+                            description: 'Quantitative assessment of lane marking visibility under various conditions.'
+                        },
+                        {
+                            title: 'Automated Compliance Monitoring',
+                            description: 'Ensure adherence to international transportation safety standards.'
+                        }
+                    ],
+                    benefits: [
+                        'Reduced accident rates through better road marking visibility',
+                        'Compliance with international transportation safety standards',
+                        'Proactive maintenance planning before accidents occur',
+                        'Improved night-time driving conditions and safety',
+                        'Enhanced road safety for all users including pedestrians and cyclists',
+                        'Optimized road marking maintenance budgets'
+                    ]
+                },
+                '4': {
+                    title: 'Predictive AI Forecasting for Pavement Degradation',
+                    tagline: 'Predict the future of your roads',
+                    description: 'Our advanced AI algorithms predict pavement deterioration before visible damage occurs, enabling preventive maintenance and extending road lifespan through data-driven decision making.',
+                    image: 'img/Predictive AI forecasting.jpg',
+                    features: [
+                        {
+                            title: 'Remaining Useful Life Prediction',
+                            description: 'Estimate pavement lifespan with high accuracy using machine learning models.'
+                        },
+                        {
+                            title: 'Future Distress Forecasting',
+                            description: 'Predict distress levels months or years in advance based on historical data.'
+                        },
+                        {
+                            title: 'Resurfacing Timing',
+                            description: 'Determine optimal timing for road resurfacing to maximize cost efficiency.'
+                        },
+                        {
+                            title: 'Multi-Factor Analysis',
+                            description: 'Integrate weather, traffic, and environmental data for comprehensive forecasting.'
+                        }
+                    ],
+                    benefits: [
+                        'Up to 40% reduction in maintenance costs through preventive strategies',
+                        'Extended pavement life through timely interventions',
+                        'Optimized resource allocation and budget utilization',
+                        'Reduced emergency repair expenses and road closures',
+                        'Improved return on infrastructure investment',
+                        'Reduced traffic disruptions and associated economic costs'
+                    ]
+                }
+            };
+
+            // Load solution data
+            function loadSolutionData() {
+                const solution = solutions[solutionId];
+                
+                if (solution) {
+                    // Update page title
+                    document.title = `${solution.title} | WEGtrax`;
+                    
+                    // Update solution title
+                    document.getElementById('solutionTitle').textContent = solution.title;
+                    
+                    // Update tagline
+                    document.getElementById('solutionTagline').textContent = solution.tagline;
+                    
+                    // Update description
+                    document.getElementById('solutionDescription').textContent = solution.description;
+                    
+                    // Update image (use parameter if available, otherwise use default)
+                    const imageSrc = solutionImg || solution.image;
+                    const solutionImageDiv = document.getElementById('solutionImage');
+                    solutionImageDiv.innerHTML = `<img src="${imageSrc}" alt="${solution.title}">`;
+                    
+                    // Update features
+                    const featuresGrid = document.getElementById('keyFeatures');
+                    featuresGrid.innerHTML = '';
+                    solution.features.forEach(feature => {
+                        const featureItem = document.createElement('div');
+                        featureItem.className = 'feature-item';
+                        featureItem.innerHTML = `
+                            <h3>${feature.title}</h3>
+                            <p>${feature.description}</p>
+                        `;
+                        featuresGrid.appendChild(featureItem);
+                    });
+                    
+                    // Update benefits
+                    const benefitsList = document.getElementById('benefitsList');
+                    benefitsList.innerHTML = '';
+                    solution.benefits.forEach(benefit => {
+                        const benefitItem = document.createElement('li');
+                        benefitItem.textContent = benefit;
+                        benefitsList.appendChild(benefitItem);
+                    });
+                } else {
+                    // Solution not found
+                    document.getElementById('solutionTitle').textContent = 'Solution Not Found';
+                    document.getElementById('solutionDescription').textContent = 'The requested solution could not be found. Please return to the solutions page.';
+                }
+            }
+
+            // Load solution data
+            loadSolutionData();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Vision | WEGtrax</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --color-dark: #0a1a1c;
+            --color-primary: #022128;
+            --color-secondary: #1a4742;
+            --color-accent: #2A7C6D;
+            --color-light: #ffffff;
+            --color-bg: #0a1a1c;
+            --color-card: #111f22;
+            --color-surface: #152B2E;
+            --color-text: #ffffff;
+            --color-text-secondary: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-glow: 0 0 20px rgba(42, 124, 109, 0.25);
+            --shadow-deep: 0 4px 20px rgba(0, 0, 0, 0.25);
+            --border-radius: 10px;
+            --section-spacing: 40px; /* Reduced from 60px */
+        }
+
+        .light-theme {
+            --color-dark: #f8fafc;
+            --color-primary: #e8f4f3;
+            --color-secondary: #0d8c7a;
+            --color-accent: #00796b;
+            --color-light: #1a1a1a;
+            --color-bg: #ffffff;
+            --color-card: #ffffff;
+            --color-surface: #f0f4f8;
+            --color-text: #1a1a1a;
+            --color-text-secondary: rgba(26, 26, 26, 0.85);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ========== HEADER ========== */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 99999;
+            background-color: rgba(10, 26, 28, 0.95);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(42, 124, 109, 0.2);
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+
+        .light-theme header {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid rgba(0, 121, 107, 0.15);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo-graphic {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-graphic img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.4s ease;
+        }
+
+        .logo-container:hover .logo-graphic img {
+            transform: rotate(-3deg) scale(1.05);
+        }
+
+        .logo-text-main {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--color-text);
+            letter-spacing: -0.5px;
+            line-height: 1;
+        }
+
+        .light-theme .logo-text-main {
+            color: #32756c;
+        }
+
+        .logo-text-tagline {
+            font-size: 0.7rem;
+            color: var(--color-accent);
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            font-weight: 600;
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--color-text-secondary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            padding: 5px 0;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--color-accent);
+        }
+
+        /* Active navigation link */
+        nav a.active {
+            color: var(--color-accent);
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--color-accent);
+            border-radius: 1px;
+        }
+
+        .nav-cta {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 8px 18px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(42, 124, 109, 0.3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(42, 124, 109, 0.4);
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: var(--color-card);
+            min-width: 200px;
+            box-shadow: var(--shadow-deep);
+            border-radius: var(--border-radius);
+            padding: 10px 0;
+            z-index: 1000;
+            border: 1px solid rgba(42, 124, 109, 0.2);
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 10px 20px;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .dropdown-content a:hover {
+            background-color: rgba(42, 124, 109, 0.1);
+            color: var(--color-accent);
+            padding-left: 25px;
+        }
+
+        /* Main Content - REDUCED SPACING */
+        .vision-hero {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+            padding: 100px 0 50px; /* Reduced from 140px 0 80px */
+            text-align: center;
+            margin-top: 70px;
+        }
+
+        .vision-hero h1 {
+            font-size: 2.8rem; /* Reduced from 3.5rem */
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--color-light) 0%, var(--color-accent) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px; /* Reduced from 20px */
+        }
+
+        .vision-hero p {
+            font-size: 1.1rem; /* Reduced from 1.2rem */
+            color: var(--color-text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        .vision-content {
+            padding: 60px 0; /* Reduced from 100px 0 */
+        }
+
+        .vision-card {
+            background: var(--color-card);
+            padding: 40px; /* Reduced from 60px */
+            border-radius: var(--border-radius);
+            margin-bottom: 40px; /* Reduced from 50px */
+            border: 1px solid rgba(42, 124, 109, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .vision-card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(42, 124, 109, 0.1) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .vision-card h2 {
+            font-size: 2rem; /* Reduced from 2.5rem */
+            color: var(--color-text);
+            margin-bottom: 20px; /* Reduced from 30px */
+            position: relative;
+            z-index: 1;
+        }
+
+        .vision-card p {
+            font-size: 1rem; /* Reduced from 1.1rem */
+            color: var(--color-text-secondary);
+            line-height: 1.6; /* Reduced from 1.8 */
+            margin-bottom: 15px; /* Reduced from 25px */
+            position: relative;
+            z-index: 1;
+        }
+
+        .vision-pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px; /* Reduced from 30px */
+            margin-top: 30px; /* Reduced from 50px */
+        }
+
+        .pillar-card {
+            background: var(--color-card);
+            padding: 20px; /* Reduced from 30px */
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(42, 124, 109, 0.2);
+            transition: var(--transition);
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-5px); /* Reduced from -10px */
+            border-color: rgba(42, 124, 109, 0.4);
+            box-shadow: var(--shadow-deep);
+        }
+
+        .pillar-icon {
+            width: 50px; /* Reduced from 60px */
+            height: 50px; /* Reduced from 60px */
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            border-radius: 10px; /* Reduced from 12px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px; /* Reduced from 20px */
+            color: white;
+            font-size: 1.2rem; /* Reduced from 1.5rem */
+        }
+
+        .pillar-card h3 {
+            font-size: 1.2rem; /* Reduced from 1.3rem */
+            color: var(--color-text);
+            margin-bottom: 10px; /* Reduced from 15px */
+        }
+
+        .pillar-card p {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem; /* Reduced from 0.95rem */
+            line-height: 1.5; /* Reduced from 1.6 */
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-dark) 100%);
+            padding: 60px 0; /* Reduced from 100px 0 */
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem; /* Reduced from 2.5rem */
+            color: var(--color-text);
+            margin-bottom: 15px; /* Reduced from 20px */
+        }
+
+        .cta-section p {
+            color: var(--color-text-secondary);
+            font-size: 1rem; /* Reduced from 1.1rem */
+            margin-bottom: 30px; /* Reduced from 40px */
+            max-width: 600px;
+            margin: 0 auto 30px; /* Reduced from 40px */
+            line-height: 1.5;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-secondary) 100%);
+            color: white;
+            padding: 12px 30px; /* Reduced from 15px 40px */
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px; /* Reduced from 10px */
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px); /* Reduced from -3px */
+            box-shadow: 0 12px 25px rgba(42, 124, 109, 0.6);
+        }
+
+        footer {
+            background: #0b0f19;
+            padding: 40px 0 20px; /* Reduced from 60px 0 30px */
+            text-align: center;
+        }
+
+        .copyright {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-top: 20px; /* Reduced from 40px */
+        }
+
+        @media (max-width: 768px) {
+            .vision-hero {
+                padding: 80px 0 40px; /* Reduced from 120px 0 60px */
+                margin-top: 60px;
+            }
+            
+            .vision-hero h1 {
+                font-size: 2.2rem; /* Reduced from 2.5rem */
+            }
+            
+            .vision-card {
+                padding: 30px 15px; /* Reduced from 40px 20px */
+            }
+            
+            .vision-card h2 {
+                font-size: 1.8rem; /* Reduced from 2rem */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo-container">
+                <div class="logo-graphic">
+                    <img src="img/wegtrax_logo_dark.png" alt="WEGtrax Logo" style="background: transparent;">
+                </div>
+                <div class="logo-text">
+                    <div class="logo-text-main">WEGtrax</div>
+                    <div class="logo-text-tagline">Road condition intelligence</div>
+                </div>
+            </a>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html" class="nav-home">Home</a></li>
+                    <li><a href="index.html#solutions" class="nav-solutions">Solutions</a></li>
+                    <li class="dropdown" id="about-dropdown">
+                        <a href="#" class="nav-about active">About Us <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="vision.html" class="active">Our Vision</a>
+                            <a href="newsletter.html">Newsletter</a>
+                        </div>
+                    </li>
+                    <li><a href="index.html#contact" class="nav-cta nav-contact">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="vision-hero">
+        <div class="container">
+            <h1>Our Vision for Road Infrastructure</h1>
+            <p>Transforming how nations monitor, maintain, and optimize their road networks through satellite technology and artificial intelligence.</p>
+        </div>
+    </section>
+
+    <!-- Vision Content -->
+    <section class="vision-content">
+        <div class="container">
+            <div class="vision-card">
+                <h2>The Future of Road Infrastructure Management</h2>
+                <p>At WEGtrax, we envision a world where road infrastructure is monitored continuously, proactively, and intelligently. A world where road failures are predicted before they occur, maintenance is optimized for maximum efficiency, and transportation networks are resilient, safe, and sustainable.</p>
+                
+                <p>Traditional road monitoring methods are reactive, labor-intensive, and limited in scope. Our vision is to revolutionize this approach by leveraging the power of satellite technology, artificial intelligence, and data analytics to create a comprehensive, automated monitoring system that covers entire national road networks.</p>
+                
+                <p>We believe that infrastructure should work for people, not the other way around. By providing early warnings of road deterioration, predicting maintenance needs, and optimizing repair schedules, we're helping create smarter, safer, and more efficient transportation systems for everyone.</p>
+            </div>
+
+            <div class="vision-pillars">
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <i class="fas fa-satellite"></i>
+                    </div>
+                    <h3>Global Coverage</h3>
+                    <p>Monitoring every road, everywhere, through satellite technology that provides continuous coverage regardless of location or accessibility.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Predictive Intelligence</h3>
+                    <p>Using AI to predict road deterioration before it becomes visible, enabling preventive maintenance and extending infrastructure lifespan.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Sustainability</h3>
+                    <p>Reducing carbon emissions through optimized maintenance routes and eliminating the need for manual inspection vehicles.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Safety First</h3>
+                    <p>Detecting road hazards early to prevent accidents and ensure safer travel for all road users.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Data-Driven Decisions</h3>
+                    <p>Providing actionable insights that help governments and organizations make informed decisions about infrastructure investments.</p>
+                </div>
+
+                <div class="pillar-card">
+                    <div class="pillar-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3>Scalable Solutions</h3>
+                    <p>Building technology that can scale from local communities to entire nations, adapting to different needs and budgets.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>Join Us in Building the Future</h2>
+            <p>Be part of the revolution in road infrastructure monitoring. Contact us to learn how our solutions can transform your road network management.</p>
+            <a href="index.html#contact" class="btn-primary">
+                <span>Get In Touch</span>
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="logo-text-main">WEGtrax</div>
+            <div class="logo-text-tagline">Road condition intelligence</div>
+            <div class="copyright">
+                © 2025 WEGtrax. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mobile dropdown handling
+            const aboutDropdown = document.getElementById('about-dropdown');
+            
+            aboutDropdown.addEventListener('click', function (e) {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    this.classList.toggle('active');
+                }
+            });
+
+            // Close mobile menu on link click
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', function () {
+                    if (window.innerWidth <= 768) {
+                        const navMenu = document.getElementById('nav-menu');
+                        navMenu.classList.remove('active');
+                        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+                        if (mobileMenuToggle) {
+                            mobileMenuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
