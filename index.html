@@ -1472,6 +1472,11 @@
     grid-template-columns: 1fr;
   }
 }
+/* TEMP: Make How it Works visible (no JS, no animation) */
+.how-it-works .animate-on-scroll {
+  opacity: 1 !important;
+  transform: none !important;
+}
 
     </style>
 </head>
@@ -1769,7 +1774,7 @@
             </div>
         </section>
 <!-- How It Works Section -->
-<section id="how-it-works">
+<section id="how-it-works" class="how-it-works">
   <div class="container">
     <div class="section-title">
       <h2>How it Works</h2>
