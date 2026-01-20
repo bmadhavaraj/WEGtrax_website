@@ -375,6 +375,12 @@
                 font-size: 2rem;
             }
         }
+        .disabled-link {
+            pointer-events: none;
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
     </style>
 </head>
 <body>
@@ -397,7 +403,7 @@
                         <a href="#" class="nav-about active">About Us <i class="fas fa-chevron-down"></i></a>
                         <div class="dropdown-content">
                             <a href="vision.html">Our Vision</a>
-                            <a href="newsletter.html" class="active">Newsletter</a>
+                            <a href="#" class="active disabled-link" aria-disabled="true">Newsletter</a>
                         </div>
                     </li>
                     <li><a href="index.html#contact" class="nav-cta nav-contact">Contact Us</a></li>
