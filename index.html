@@ -35,8 +35,12 @@ header{position:fixed;top:0;left:0;right:0;z-index:8000;height:66px;background:r
 header.scrolled{background:rgba(7,16,15,.98)}
 .nav-row{display:flex;justify-content:space-between;align-items:center;width:100%}
 .logo{display:flex;align-items:center;gap:9px}
-.logo-img{width:34px;height:34px;position:relative;flex-shrink:0}
-.logo-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.logo-img{width:38px;height:38px;position:relative;flex-shrink:0;overflow:visible}
+.logo-img img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  mix-blend-mode:screen;
+  filter:brightness(1.4) saturate(1.2);
+}
 .logo-name{font-size:1.1rem;font-weight:800;letter-spacing:-.3px}
 .logo-tag{font-size:.6rem;text-transform:uppercase;letter-spacing:1.4px;color:var(--teal);font-weight:600;margin-top:1px}
 nav ul{display:flex;list-style:none;gap:2px;align-items:center}
